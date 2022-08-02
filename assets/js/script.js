@@ -10,13 +10,17 @@ page element for list of watched
 */
 var userInput = document.querySelector("#user-input");
 var submitButton = document.querySelector("#searchBtn");
+var toWatchList = document.querySelector("#watch-list");
+var WatchedList = document.querySelector("#removed");
 /* 
 global variables needed
 array for local storage of list to watch
 array for local storage of list of watched
 
 */
-
+var tracker = 0;
+var buttonNum = 1;
+var tracker2 = 0;
 
 /* functions needed
 function to handle submit event
@@ -27,6 +31,41 @@ function to fetch api for myanimelist link
 function to render quote and link
 
 */
+
+function handleSubmit(event){
+    event.preventDefault();
+    var animeName = userInput.value.trim();
+    tracker++;
+    localStorage.setItem(tracker,animeName);
+    getAnimeQuotes(animeName);
+    getAnimeInfo(animeName);
+    displayList();
+}
+
+function displayList(){
+    var listEl = document.createElement("button");
+    listEl.classList.add("buttons");
+    listEl.setAttribute('id', 'button' + buttonNum);
+    buttonNum++;
+    listEl.innerHTML = localStorage.getItem(tracker);
+    listEl.style.listStyle = "none";
+    toWatchList.appendChild(listEl);
+}
+
+function handleMoveButtons(event){
+    event.preventDefault();
+    localStorage.removeItem(tracker);
+    tracker--;
+    var newText = event.target.innerHTML;
+    event.target.remove();
+    var newListEl = document.createElement("p");
+    
+    localStorage.setItem(tracker2, newText);
+    newListEl.innerHTML = localStorage.getItem(tracker2);
+    tracker2++;
+    WatchedList.appendChild(newListEl);
+
+}
 
 // api call to get the quotes data
 function getAnimeQuotes(name){
@@ -50,9 +89,9 @@ function getAnimeQuotes(name){
                 console.log(data[randNum].character);
                 console.log(data[randNum].quote);
             });
-        }
-        else{
+        } else {
             console.log("please enter a valid anime name");
+            return;
         }
 
     });
@@ -90,6 +129,9 @@ function getAnimeInfo(name){
                 console.log(indexUsed);
                 
             });
+        }else {
+            console.log("please enter a valid anime name");
+            return;
         }
 
     });
@@ -98,15 +140,9 @@ function getAnimeInfo(name){
 
 // function calls
 
-function handleSubmit(event){
-    event.preventDefault();
-    var animeName = userInput.value.trim();
-    getAnimeQuotes(animeName);
-    getAnimeInfo(animeName);
-}
+
 
 submitButton.addEventListener('click', handleSubmit);
-
-
+toWatchList.addEventListener('click',handleMoveButtons);
 
 
