@@ -70,7 +70,6 @@ function handleMoveButtons(event){
 // api call to get the quotes data
 function getAnimeQuotes(name){
     var array = name.split(" ");
-    console.log(array);
     var apiURL = 'https://animechan.vercel.app/api/quotes/anime?title=';
     for (var i =0; i< array.length; i++){
         apiURL += array[i];
@@ -81,7 +80,12 @@ function getAnimeQuotes(name){
     console.log(apiURL);
     
     fetch(apiURL).then(function (response){
-        if (response.ok){
+        console.log(response.status);
+        console.log(response);
+        if (response.status == 404){
+            console.log("test");
+            return;
+        }else if (response.ok){
             response.json().then(function(data){
                 // console.log(data);
                 // console.log(data.length);   
@@ -89,10 +93,7 @@ function getAnimeQuotes(name){
                 console.log(data[randNum].character);
                 console.log(data[randNum].quote);
             });
-        } else {
-            console.log("please enter a valid anime name");
-            return;
-        }
+        } 
 
     });
     
@@ -101,11 +102,14 @@ function getAnimeQuotes(name){
 //api call to get jikan data
 
 function getAnimeInfo(name){
-    var anime = name;
+    var anime = name.toLowerCase;
     var indexUsed;
     var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
     fetch(apiURL).then(function (response){
-        if (response.ok){
+        if (response.statusText == "OK"){
+            console.log("invalid name");
+            return;
+        }else if (response.ok){
             response.json().then(function(data){
                 console.log(data);
                 for( var i = 0; i < data.data.length; i++){
@@ -118,20 +122,14 @@ function getAnimeInfo(name){
                         console.log(i);
                         indexUsed = i;
                     }
-                    else{
-                        return;
-                    }
                 }
-                console.log(data.data[indexUsed].title);
-                console.log(data.data[indexUsed].url);
-                console.log(data.data[indexUsed].duration);
-                console.log(data.data[indexUsed].year);
-                console.log(indexUsed);
+                // console.log(data.data[indexUsed].title);
+                // console.log(data.data[indexUsed].url);
+                // console.log(data.data[indexUsed].duration);
+                // console.log(data.data[indexUsed].year);
+                // console.log(indexUsed);
                 
             });
-        }else {
-            console.log("please enter a valid anime name");
-            return;
         }
 
     });
@@ -143,6 +141,6 @@ function getAnimeInfo(name){
 
 
 submitButton.addEventListener('click', handleSubmit);
-toWatchList.addEventListener('click',handleMoveButtons);
+toWatchList.addEventListener('click', handleMoveButtons);
 
 
