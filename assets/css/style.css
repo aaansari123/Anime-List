@@ -1,0 +1,13 @@
+header {
+    display: flex;
+    padding: 3%;
+    border-bottom: 1px solid black;
+}
+
+#user-input{
+
+}
+
+#searchBtn {
+    margin-left: 5%;
+}
