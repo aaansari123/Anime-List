@@ -81,6 +81,10 @@ function getAnimeQuotes(name){
     console.log(apiURL);
     
     fetch(apiURL).then(function (response){
+        console.log(response);
+        if (!response.ok){
+            return;
+        }
         if (response.ok){
             response.json().then(function(data){
                 // console.log(data);
@@ -105,6 +109,11 @@ function getAnimeInfo(name){
     var indexUsed;
     var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
     fetch(apiURL).then(function (response){
+        console.log(response.ok);
+        if (!response.ok){
+            console.log("invalid name");
+            return;
+        }
         if (response.ok){
             response.json().then(function(data){
                 console.log(data);
@@ -129,9 +138,6 @@ function getAnimeInfo(name){
                 console.log(indexUsed);
                 
             });
-        }else {
-            console.log("please enter a valid anime name");
-            return;
         }
 
     });
@@ -143,6 +149,6 @@ function getAnimeInfo(name){
 
 
 submitButton.addEventListener('click', handleSubmit);
-toWatchList.addEventListener('click',handleMoveButtons);
+toWatchList.addEventListener('click', handleMoveButtons);
 
 
