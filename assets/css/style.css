@@ -14,10 +14,6 @@ header {
     margin: 0 7%;
 }
 
-#anime-results {
-    margin-left: 15%;
-}
-
 main {
     display: flex;
     justify-content: space-around;
