@@ -8,7 +8,8 @@ move to watched button
 page element for list of watched
 
 */
-
+var userInput = document.querySelector("#user-input");
+var submitButton = document.querySelector("#searchBtn");
 /* 
 global variables needed
 array for local storage of list to watch
@@ -28,8 +29,8 @@ function to render quote and link
 */
 
 // api call to get the quotes data
-function getAnimeQuotes(){
-    var apiURL = 'https://animechan.vercel.app/api/quotes/anime?title=naruto'
+function getAnimeQuotes(name){
+    var apiURL = 'https://animechan.vercel.app/api/quotes/anime?title=' + name;
     fetch(apiURL).then(function (response){
         if (response.ok){
             response.json().then(function(data){
@@ -47,12 +48,16 @@ function getAnimeQuotes(){
 
 //api call to get jikan data
 
-function getAnimeQuotes(){
-    var apiURL = 'https://api.jikan.moe/v4/anime/1'
+function getAnimeInfo(name){
+    var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
     fetch(apiURL).then(function (response){
         if (response.ok){
             response.json().then(function(data){
                 console.log(data);
+                for( var i = 0; i < data.data.length; i++){
+                    console.log(data.data[i].title);
+                }
+                
                 // console.log(data.length);   
                 // var randNum = Math.floor(Math.random() * data.length);
                 // console.log(data[randNum].character);
@@ -65,5 +70,17 @@ function getAnimeQuotes(){
 }
 
 // function calls
-getAnimeQuotes();
+
+function handleSubmit(event){
+    event.preventDefault();
+    var animeName = userInput.value.trim();
+    console.log(animeName);
+    getAnimeQuotes(animeName);
+    getAnimeInfo(animeName);
+}
+
+submitButton.addEventListener('click', handleSubmit);
+
+
+
 
