@@ -36,11 +36,34 @@ function getAnimeQuotes(){
                 console.log(data);
                 console.log(data.length);   
                 var randNum = Math.floor(Math.random() * data.length);
+                console.log(data[randNum].character);
+                console.log(data[randNum].quote);
             });
         }
 
     });
     
 }
+
+//api call to get jikan data
+
+function getAnimeQuotes(){
+    var apiURL = 'https://api.jikan.moe/v4/anime/1'
+    fetch(apiURL).then(function (response){
+        if (response.ok){
+            response.json().then(function(data){
+                console.log(data);
+                // console.log(data.length);   
+                // var randNum = Math.floor(Math.random() * data.length);
+                // console.log(data[randNum].character);
+                // console.log(data[randNum].quote);
+            });
+        }
+
+    });
+    
+}
+
+// function calls
 getAnimeQuotes();
 
