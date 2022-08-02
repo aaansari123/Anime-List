@@ -8,3 +8,17 @@ header {
     margin-left: 5%;
 
 }
+
+main{
+    display: flex;
+    justify-content: space-around;
+}
+
+.vl {
+    border-left: 1px solid black;
+    height: 200px;
+    position: inherit;
+    left: 50%;
+    margin-left: -3px;
+    top: 0;
+  }
