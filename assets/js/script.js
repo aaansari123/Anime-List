@@ -128,8 +128,16 @@ function getAnimeInfo(name) {
 function handleSubmit(event) {
     event.preventDefault();
     var animeName = userInput.value.trim();
-    tracker.push(animeName);
+    console.log(typeof animeName);
+    var test = JSON.stringify(animeName);
+    console.log(typeof test);
+    console.log(test);
+    console.log(test.length);
+    tracker.push(test);
+    console.log(tracker);
+    console.log(tracker.length);
     localStorage.setItem('watchList', tracker);
+    console.log(localStorage.getItem('watchList'));
     getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
     
@@ -143,8 +151,9 @@ function handleMoveButtons(event) {
     event.target.remove();
     var remove = tracker.indexOf(newText);
     console.log(remove);
-    tracker.splice(remove,1);
+    tracker.splice(remove, 1);
     console.log(tracker); 
+    console.log(tracker.length);
     localStorage.setItem('watchList', tracker);
     var newListEl = document.createElement("p");
 
@@ -173,8 +182,23 @@ function displayInfo(picURL, siteURL, title, duration, year) {
     yearEl.innerHTML = "released in" +  year;
 }
 function createFromStorage(){
-    console.log(localStorage.getItem('watchList'));
-    console.log(localStorage.getItem('watchedList'));
+
+    if(localStorage.getItem('watchList') != null){
+        var newArray = localStorage.getItem('watchList').split(',')
+        for (var i = 0; i < newArray.length; i++){
+            var listEl = document.createElement("button");
+            listEl.classList.add("buttons");
+            listEl.setAttribute('id', 'button' + buttonNum);
+            buttonNum++;
+            listEl.innerHTML = newArray[i].replace('"', "");
+            listEl.style.listStyle = "none";
+            toWatchList.appendChild(listEl);
+            }
+    }
+    
+    var alreadyWatched = localStorage.getItem('watchedList')
+    console.log(alreadyWatched);
+
 }
 submitButton.addEventListener('click', handleSubmit);
 toWatchList.addEventListener('click', handleMoveButtons);
