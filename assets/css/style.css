@@ -34,6 +34,10 @@ header {
     transform: translate(2px, 2px);
 }
 
+body{
+    color: #ededed;
+}
+
 #results {
     display: flex;
     border-bottom: 1px solid black;
