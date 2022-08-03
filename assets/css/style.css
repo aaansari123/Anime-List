@@ -1,19 +1,29 @@
-*{
-    font-family: 'Edu VIC WA NT Beginner',  
+:root {
+    --main-color: darkseagreen;
+    --secondary-color: #ffffff;
+    --third-color: rgb(61, 201, 220); 
+
 }
+
+* {
+    font-family: 'Mouse Memoirs', sans-serif;
+    background-color: var(--main-color);
+}
+
 header {
     display: flex;
     padding: 3%;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--secondary-color);
 }
+
 /* style for the submit btn */
 #searchBtn {
-    background-color: #bccbf5;
-    border: 2px solid #422800;
+    background-color: var(--secondary-color);
+    border: 2px solid var(--main-color);
     border-radius: 30px;
-    box-shadow: #422800 4px 4px 0 0;
+    box-shadow: #221706 5px 6px 0 0;
     text-transform: uppercase;
-    color: #422800;
+    color: var(--main-color);
     cursor: pointer;
     display: inline-block;
     font-weight: 600;
@@ -24,7 +34,10 @@ header {
 }
 
 #searchBtn:hover {
-    background-color: #fff;
+    background-color: var(--main-color);
+    box-shadow: var(--secondary-color) 4px 4px 0 0;
+    border-color: var(--secondary-color);
+    color: var(--secondary-color)
 }
 
 #searchBtn:active {
@@ -34,7 +47,7 @@ header {
 
 #results {
     display: flex;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--secondary-color);
     margin: 0 10%;
 }
 
@@ -44,7 +57,7 @@ main {
 }
 
 #resultsInfo {
-    border-left: 1px solid black;
+    border-left: 1px solid var(--secondary-color);
     margin-left: 10%;
     padding-left: 10%;
 }
@@ -55,35 +68,34 @@ h2 {
 }
 
 .vl {
-    border-left: 1px solid black;
+    border-left: 1px solid var(--secondary-color);
     height: 400;
     position: inherit;
     left: 50%;
     margin-left: -3px;
     top: 0;
-  }
+}
+
+.watch-list {
+    font-size: large;
+}
 
 /* responsive design to modile view */
-  @media screen and (max-width: 390px) {
-
-    /* header {
-        background-color: white;
-    } */
+@media screen and (max-width: 390px) {
 
     #results {
         display: block;
     }
 
     #resultsInfo {
-        border-top: 1px solid black;
+        border-top: 1px solid var(--secondary-color);
         margin-top: 10%;
         padding-top: 10%;
         border-left: none;
     }
 
     #anime-img {
-        margin-left:10%;
+        margin-left: 10%;
     }
 
-  }
-  
+}
