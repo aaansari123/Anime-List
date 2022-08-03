@@ -22,6 +22,7 @@ array for local storage of list to watch
 array for local storage of list of watched
 
 */
+// localStorage.clear();
 var tracker = [];
 var tracker2 = [];
 // var tracker = localStorage.getItem('watchList');
@@ -62,8 +63,8 @@ function getAnimeQuotes(name) {
                     var randNum = Math.floor(Math.random() * data.length);
                     var character = data[randNum].character;
                     var quote = data[randNum].quote;
-                    console.log(data[randNum].character);
-                    console.log(data[randNum].quote);
+                    // console.log(data[randNum].character);
+                    // console.log(data[randNum].quote);
                     displayList(name);
                 });
             }
@@ -80,7 +81,6 @@ function getAnimeQuotes(name) {
 //api call to get jikan data
 
 function getAnimeInfo(name) {
-    var anime = name.toLowerCase;
     var indexUsed;
     var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
     fetch(apiURL).then(function (response) {
@@ -92,7 +92,7 @@ function getAnimeInfo(name) {
                     for (var i = 0; i < data.data.length; i++) {
                         var title = data.data[i].title.replace(':', "");
                         if (title.toLowerCase() == name.toLowerCase()) {
-                            console.log(i);
+                            // console.log(i);
                             indexUsed = i;
                         }
                     }
@@ -101,7 +101,7 @@ function getAnimeInfo(name) {
                     var url = data.data[indexUsed].url;
                     var duration = data.data[indexUsed].duration;
                     var year = data.data[indexUsed].year;
-                    console.log(data.data[indexUsed].images);
+                    // console.log(data.data[indexUsed].images);
                     // console.log(data.data[indexUsed].title);
                     // console.log(data.data[indexUsed].url);
                     // console.log(data.data[indexUsed].duration);
@@ -138,14 +138,14 @@ function handleSubmit(event) {
 function handleMoveButtons(event) {
     event.preventDefault();
     var newText = event.target.innerHTML;
+    console.log(newText);
     tracker2.push(newText);
     event.target.remove();
-    for (var i = 0; i < tracker.length; i++){
-        if(tracker[i] == newText){
-            tracker.splice(i);
-        }
-    }
-    localStorage.setItem('watchlist', tracker);
+    var remove = tracker.indexOf(newText);
+    console.log(remove);
+    tracker.splice(remove,1);
+    console.log(tracker); 
+    localStorage.setItem('watchList', tracker);
     var newListEl = document.createElement("p");
 
     localStorage.setItem('watchedList', newText);
@@ -172,9 +172,13 @@ function displayInfo(picURL, siteURL, title, duration, year) {
     durationEl.innerHTML = duration;
     yearEl.innerHTML = "released in" +  year;
 }
-
+function createFromStorage(){
+    console.log(localStorage.getItem('watchList'));
+    console.log(localStorage.getItem('watchedList'));
+}
 submitButton.addEventListener('click', handleSubmit);
 toWatchList.addEventListener('click', handleMoveButtons);
+createFromStorage();
 
 
 
