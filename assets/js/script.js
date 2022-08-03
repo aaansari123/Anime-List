@@ -84,16 +84,12 @@ function getAnimeInfo(name) {
     var indexUsed;
     var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
     fetch(apiURL).then(function (response) {
-        // console.log(response.status);
-        // console.log(response);
         if (response.ok) {
             response.json().then(function (data) {
                 try {
                     for (var i = 0; i < data.data.length; i++) {
                         var title = data.data[i].title.replace(':', "");
                         if (title.toLowerCase() == name.toLowerCase()) {
-                            console.log(i);
-                            console.log(data);
                             indexUsed = i;
                         }
                     }
@@ -102,12 +98,6 @@ function getAnimeInfo(name) {
                     var url = data.data[indexUsed].url;
                     var duration = data.data[indexUsed].duration;
                     var year = data.data[indexUsed].year;
-                    // console.log(data.data[indexUsed].images);
-                    // console.log(data.data[indexUsed].title);
-                    // console.log(data.data[indexUsed].url);
-                    // console.log(data.data[indexUsed].duration);
-                    // console.log(data.data[indexUsed].year);
-                    // console.log(indexUsed);
                     displayInfo(pic,url,title,duration,year);
 
                 } catch (error) {
@@ -129,36 +119,43 @@ function getAnimeInfo(name) {
 function handleSubmit(event) {
     event.preventDefault();
     var animeName = userInput.value.trim();
-    console.log(typeof animeName);
     var test = JSON.stringify(animeName);
-    console.log(typeof test);
-    console.log(test);
-    console.log(test.length);
     tracker.push(test);
-    console.log(tracker);
-    console.log(tracker.length);
     localStorage.setItem('watchList', tracker);
-    console.log(localStorage.getItem('watchList'));
     getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
     
 }
 
 function handleMoveButtons(event) {
+    console.log(event.target.type);
+    if (event.target.type != "submit"){
+        return;
+    }
     event.preventDefault();
     var newText = event.target.innerHTML;
-    console.log(newText);
-    tracker2.push(newText);
+    
     event.target.remove();
-    var remove = tracker.indexOf(newText);
-    console.log(remove);
-    tracker.splice(remove, 1);
-    console.log(tracker); 
-    console.log(tracker.length);
-    localStorage.setItem('watchList', tracker);
+    var arrayY = [];
+    if (localStorage.getItem('watchList') != null){
+        var arrayX = localStorage.getItem('watchList').split(',');
+    }
+    for (var i = 0; i < arrayX.length; i++){
+        if (JSON.parse(arrayX[i]) != newText){
+            arrayY.push(arrayX[i]);
+        }
+    }
+    localStorage.setItem('watchList', arrayY);
     var newListEl = document.createElement("p");
-
-    localStorage.setItem('watchedList', newText);
+    if (localStorage.getItem('watchedList') != null){
+        var arrayZ = localStorage.getItem('watchList').split(',');
+        arrayZ.push(newText);
+        localStorage.setItem('watchedList', arrayZ);
+    } else{
+        tracker2.push(newText);
+        localStorage.setItem('watchedList', tracker2);
+    }
+    
     newListEl.innerHTML = event.target.innerHTML;
     WatchedList.appendChild(newListEl);
 
@@ -172,8 +169,6 @@ function displayList(name) {
     listEl.innerHTML = name;
     listEl.style.listStyle = "none";
     toWatchList.appendChild(listEl);
-    console.log(localStorage.getItem('watchList'));
-    console.log(localStorage.getItem('watchedList'));
 }
 
 function displayInfo(picURL, siteURL, title, duration, year) {
@@ -191,14 +186,21 @@ function createFromStorage(){
             listEl.classList.add("buttons");
             listEl.setAttribute('id', 'button' + buttonNum);
             buttonNum++;
-            listEl.innerHTML = newArray[i].replace('"', "");
+            listEl.innerHTML = JSON.parse(newArray[i]);
             listEl.style.listStyle = "none";
             toWatchList.appendChild(listEl);
             }
     }
-    
-    var alreadyWatched = localStorage.getItem('watchedList')
-    console.log(alreadyWatched);
+    if (localStorage.getItem('watchedList') != null){
+        var newArray2 = localStorage.getItem('watchedList').split(',')
+        for (var i = 0; i < newArray2.length; i++){
+            var newListEl = document.createElement("p");
+            newListEl.innerHTML = newArray2[i].replace('"', "");
+            newListEl.style.listStyle = "none";
+            WatchedList.appendChild(newListEl);
+            }
+    }
+
 
 }
 submitButton.addEventListener('click', handleSubmit);
