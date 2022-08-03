@@ -14,8 +14,13 @@ var toWatchList = document.querySelector("#watch-list");
 var WatchedList = document.querySelector("#removed");
 var imageEl = document.querySelector("#anime-img");
 var titleEl = document.querySelector("#title");
+var urlEl = document.querySelector("#url");
+var quoteEl = document.querySelector('#quote');
 var durationEl = document.querySelector("#duration");
 var yearEl = document.querySelector('#year');
+var numEpisodesEl = document.querySelector('#episodeNum');
+var ratingsEl = document.querySelector('#rating');
+
 /* 
 global variables needed
 array for local storage of list to watch
@@ -66,6 +71,7 @@ function getAnimeQuotes(name) {
                     // console.log(data[randNum].character);
                     // console.log(data[randNum].quote);
                     displayList(name);
+                    displayQuote(character, quote);
                 });
             }
     
@@ -86,6 +92,7 @@ function getAnimeInfo(name) {
     fetch(apiURL).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
+                
                 try {
                     for (var i = 0; i < data.data.length; i++) {
                         var title = data.data[i].title.replace(':', "");
@@ -93,12 +100,15 @@ function getAnimeInfo(name) {
                             indexUsed = i;
                         }
                     }
+                    console.log(data.data[indexUsed]);
                     var pic = data.data[indexUsed].images.webp.image_url;
                     var title = data.data[indexUsed].title;
                     var url = data.data[indexUsed].url;
                     var duration = data.data[indexUsed].duration;
                     var year = data.data[indexUsed].year;
-                    displayInfo(pic,url,title,duration,year);
+                    var episodes = data.data[indexUsed].episodes;
+                    var rating = data.data[indexUsed].score;
+                    displayInfo(pic,url,title,duration,year,episodes,rating);
 
                 } catch (error) {
                     console.log('error');
@@ -122,6 +132,7 @@ function handleSubmit(event) {
     var test = JSON.stringify(animeName);
     tracker.push(test);
     localStorage.setItem('watchList', tracker);
+    userInput.value = "";
     getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
     
@@ -171,11 +182,18 @@ function displayList(name) {
     toWatchList.appendChild(listEl);
 }
 
-function displayInfo(picURL, siteURL, title, duration, year) {
+function displayInfo(picURL, siteURL, title, duration, year,episodes,rating) {
     imageEl.src = picURL;
+    urlEl.href = siteURL;
+    urlEl.innerHTML = "MyAnimeList";
     titleEl.innerHTML = title;
     durationEl.innerHTML = duration;
     yearEl.innerHTML = "released in " +  year;
+    numEpisodesEl.innerHTML = "# of Episodes: " + episodes;
+    ratingsEl.innerHTML = "rating: " + rating;
+}
+function displayQuote(character, quote){
+    quoteEl.innerHTML = character + ": " + quote;
 }
 function createFromStorage(){
 
