@@ -12,6 +12,7 @@ var userInput = document.querySelector("#user-input");
 var submitButton = document.querySelector("#searchBtn");
 var toWatchList = document.querySelector("#watch-list");
 var WatchedList = document.querySelector("#removed");
+var imageEl = document.querySelector("#anime-img");
 /* 
 global variables needed
 array for local storage of list to watch
@@ -32,17 +33,17 @@ function to render quote and link
 
 */
 
-function handleSubmit(event){
+function handleSubmit(event) {
     event.preventDefault();
     var animeName = userInput.value.trim();
     tracker++;
-    localStorage.setItem(tracker,animeName);
+    localStorage.setItem(tracker, animeName);
     getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
     displayList();
 }
 
-function displayList(){
+function displayList() {
     var listEl = document.createElement("button");
     listEl.classList.add("buttons");
     listEl.setAttribute('id', 'button' + buttonNum);
@@ -52,14 +53,18 @@ function displayList(){
     toWatchList.appendChild(listEl);
 }
 
-function handleMoveButtons(event){
+function displayInfo(picURL, siteURL, title, duration, year){
+    imageEl.src = picURL;
+}
+
+function handleMoveButtons(event) {
     event.preventDefault();
     localStorage.removeItem(tracker);
     tracker--;
     var newText = event.target.innerHTML;
     event.target.remove();
     var newListEl = document.createElement("p");
-    
+
     localStorage.setItem(tracker2, newText);
     newListEl.innerHTML = localStorage.getItem(tracker2);
     tracker2++;
@@ -68,72 +73,76 @@ function handleMoveButtons(event){
 }
 
 // api call to get the quotes data
-function getAnimeQuotes(name){
+function getAnimeQuotes(name) {
     var array = name.split(" ");
     var apiURL = 'https://animechan.vercel.app/api/quotes/anime?title=';
-    for (var i =0; i< array.length; i++){
+    for (var i = 0; i < array.length; i++) {
         apiURL += array[i];
-        if (i<array.length-1){
+        if (i < array.length - 1) {
             apiURL += "&";
         }
     }
     console.log(apiURL);
-    
-    fetch(apiURL).then(function (response){
+
+    fetch(apiURL).then(function (response) {
         console.log(response.status);
         console.log(response);
-        if (response.status == 404){
-            console.log("test");
-            return;
-        }else if (response.ok){
-            response.json().then(function(data){
+        if (response.ok) {
+            response.json().then(function (data) {
                 // console.log(data);
                 // console.log(data.length);   
                 var randNum = Math.floor(Math.random() * data.length);
                 console.log(data[randNum].character);
                 console.log(data[randNum].quote);
             });
-        } 
+        }
 
     });
-    
+
 }
 
 //api call to get jikan data
 
-function getAnimeInfo(name){
+function getAnimeInfo(name) {
     var anime = name.toLowerCase;
     var indexUsed;
     var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
-    fetch(apiURL).then(function (response){
-        if (response.statusText == "OK"){
-            console.log("invalid name");
-            return;
-        }else if (response.ok){
-            response.json().then(function(data){
+    fetch(apiURL).then(function (response) {
+        console.log(response.status);
+        console.log(response);
+        if (response.ok) {
+            response.json().then(function (data) {
                 console.log(data);
-                for( var i = 0; i < data.data.length; i++){
+                for (var i = 0; i < data.data.length; i++) {
                     // console.log(data.data[i].title);
                     // console.log(name);
                     var title = data.data[i].title.replace(':', "");
                     // console.log(title.toLowerCase());
 
-                    if (title.toLowerCase() == name.toLowerCase()){
+                    if (title.toLowerCase() == name.toLowerCase()) {
                         console.log(i);
                         indexUsed = i;
                     }
                 }
+                var pic = data.data[indexUsed].images.webp.image_url;
+                var title = data.data[indexUsed].images.webp.image_url;
+                var url = data.data[indexUsed].url;
+                var duration = data.data[indexUsed].duration;
+                var year = data.data[indexUsed].year;
+                console.log(data.data[indexUsed].images);
                 // console.log(data.data[indexUsed].title);
                 // console.log(data.data[indexUsed].url);
                 // console.log(data.data[indexUsed].duration);
                 // console.log(data.data[indexUsed].year);
                 // console.log(indexUsed);
-                
+                displayInfo(pic);
+
+
             });
         }
 
     });
-    
+
 }
 
 // function calls
