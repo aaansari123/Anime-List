@@ -45,6 +45,10 @@ header {
     transform: translate(2px, 2px);
 }
 
+body{
+    color: #ededed;
+}
+
 #results {
     display: flex;
     border-bottom: 1px solid var(--secondary-color);
@@ -98,4 +102,16 @@ h2 {
         margin-left: 10%;
     }
 
+    #watch-list{
+        border-bottom: 1px solid black;
+        margin-bottom: 10%;
+        border-left: none;
+    }
+    #vl{
+        display: none;
+    }
+    main{
+        display: block;
+    }
 }
+  
