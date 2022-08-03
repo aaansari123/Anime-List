@@ -6,15 +6,36 @@ header {
     padding: 3%;
     border-bottom: 1px solid black;
 }
-
+/* style for the submit btn */
 #searchBtn {
-    margin-left: 5%;
+    background-color: #bccbf5;
+    border: 2px solid #422800;
+    border-radius: 30px;
+    box-shadow: #422800 4px 4px 0 0;
+    text-transform: uppercase;
+    color: #422800;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 600;
+    font-size: 18px;
+    margin-left: 3%;
+    padding: 0 18px;
+    line-height: 50px;
+}
+
+#searchBtn:hover {
+    background-color: #fff;
+}
+
+#searchBtn:active {
+    box-shadow: #422800 2px 2px 0 0;
+    transform: translate(2px, 2px);
 }
 
 #results {
     display: flex;
     border-bottom: 1px solid black;
-    margin: 0 7%;
+    margin: 0 10%;
 }
 
 main {
@@ -23,7 +44,9 @@ main {
 }
 
 #resultsInfo {
-    margin-left: 30%;
+    border-left: 1px solid black;
+    margin-left: 10%;
+    padding-left: 10%;
 }
 
 h2 {
