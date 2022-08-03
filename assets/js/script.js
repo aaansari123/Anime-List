@@ -13,15 +13,20 @@ var submitButton = document.querySelector("#searchBtn");
 var toWatchList = document.querySelector("#watch-list");
 var WatchedList = document.querySelector("#removed");
 var imageEl = document.querySelector("#anime-img");
+var titleEl = document.querySelector("#title");
+var durationEl = document.querySelector("#duration");
+var yearEl = document.querySelector('#year');
 /* 
 global variables needed
 array for local storage of list to watch
 array for local storage of list of watched
 
 */
-var tracker = 0;
+var tracker = [];
+var tracker2 = [];
+// var tracker = localStorage.getItem('watchList');
 var buttonNum = 1;
-var tracker2 = 0;
+// var tracker2 = localStorage.getItem('watchedList')
 
 /* functions needed
 function to handle submit event
@@ -33,46 +38,9 @@ function to render quote and link
 
 */
 
-function handleSubmit(event) {
-    event.preventDefault();
-    var animeName = userInput.value.trim();
-    tracker++;
-    localStorage.setItem(tracker, animeName);
-    getAnimeQuotes(animeName);
-    getAnimeInfo(animeName);
-    displayList();
-}
-
-function displayList() {
-    var listEl = document.createElement("button");
-    listEl.classList.add("buttons");
-    listEl.setAttribute('id', 'button' + buttonNum);
-    buttonNum++;
-    listEl.innerHTML = localStorage.getItem(tracker);
-    listEl.style.listStyle = "none";
-    toWatchList.appendChild(listEl);
-}
-
-function displayInfo(picURL, siteURL, title, duration, year){
-    imageEl.src = picURL;
-}
-
-function handleMoveButtons(event) {
-    event.preventDefault();
-    localStorage.removeItem(tracker);
-    tracker--;
-    var newText = event.target.innerHTML;
-    event.target.remove();
-    var newListEl = document.createElement("p");
-
-    localStorage.setItem(tracker2, newText);
-    newListEl.innerHTML = localStorage.getItem(tracker2);
-    tracker2++;
-    WatchedList.appendChild(newListEl);
-
-}
 
 // api call to get the quotes data
+
 function getAnimeQuotes(name) {
     var array = name.split(" ");
     var apiURL = 'https://animechan.vercel.app/api/quotes/anime?title=';
@@ -82,22 +50,30 @@ function getAnimeQuotes(name) {
             apiURL += "&";
         }
     }
-    console.log(apiURL);
+    try {
 
-    fetch(apiURL).then(function (response) {
-        console.log(response.status);
-        console.log(response);
-        if (response.ok) {
-            response.json().then(function (data) {
-                // console.log(data);
-                // console.log(data.length);   
-                var randNum = Math.floor(Math.random() * data.length);
-                console.log(data[randNum].character);
-                console.log(data[randNum].quote);
-            });
-        }
+        fetch(apiURL).then(function (response) {
+            if (response.status == 404){
+                console.log("error3");
+                return;
+            }else if (response.ok) {
+                response.json().then(function (data) {
+                    
+                    var randNum = Math.floor(Math.random() * data.length);
+                    var character = data[randNum].character;
+                    var quote = data[randNum].quote;
+                    console.log(data[randNum].character);
+                    console.log(data[randNum].quote);
+                    displayList(name);
+                });
+            }
+    
+        });
+    } catch (error) {
+        console.log('error2');
+        return;
+    }
 
-    });
 
 }
 
@@ -108,34 +84,37 @@ function getAnimeInfo(name) {
     var indexUsed;
     var apiURL = 'https://api.jikan.moe/v4/anime?q=' + name;
     fetch(apiURL).then(function (response) {
-        console.log(response.status);
-        console.log(response);
+        // console.log(response.status);
+        // console.log(response);
         if (response.ok) {
             response.json().then(function (data) {
-                console.log(data);
-                for (var i = 0; i < data.data.length; i++) {
-                    // console.log(data.data[i].title);
-                    // console.log(name);
-                    var title = data.data[i].title.replace(':', "");
-                    // console.log(title.toLowerCase());
-
-                    if (title.toLowerCase() == name.toLowerCase()) {
-                        console.log(i);
-                        indexUsed = i;
+                try {
+                    for (var i = 0; i < data.data.length; i++) {
+                        var title = data.data[i].title.replace(':', "");
+                        if (title.toLowerCase() == name.toLowerCase()) {
+                            console.log(i);
+                            indexUsed = i;
+                        }
                     }
+                    var pic = data.data[indexUsed].images.webp.image_url;
+                    var title = data.data[indexUsed].title;
+                    var url = data.data[indexUsed].url;
+                    var duration = data.data[indexUsed].duration;
+                    var year = data.data[indexUsed].year;
+                    console.log(data.data[indexUsed].images);
+                    // console.log(data.data[indexUsed].title);
+                    // console.log(data.data[indexUsed].url);
+                    // console.log(data.data[indexUsed].duration);
+                    // console.log(data.data[indexUsed].year);
+                    // console.log(indexUsed);
+                    displayInfo(pic,url,title,duration,year);
+
+                } catch (error) {
+                    console.log('error');
+                    return;
+
                 }
-                var pic = data.data[indexUsed].images.webp.image_url;
-                var title = data.data[indexUsed].images.webp.image_url;
-                var url = data.data[indexUsed].url;
-                var duration = data.data[indexUsed].duration;
-                var year = data.data[indexUsed].year;
-                console.log(data.data[indexUsed].images);
-                // console.log(data.data[indexUsed].title);
-                // console.log(data.data[indexUsed].url);
-                // console.log(data.data[indexUsed].duration);
-                // console.log(data.data[indexUsed].year);
-                // console.log(indexUsed);
-                displayInfo(pic);
+
 
 
             });
@@ -146,10 +125,56 @@ function getAnimeInfo(name) {
 }
 
 // function calls
+function handleSubmit(event) {
+    event.preventDefault();
+    var animeName = userInput.value.trim();
+    tracker.push(animeName);
+    localStorage.setItem('watchList', tracker);
+    getAnimeQuotes(animeName);
+    getAnimeInfo(animeName);
+    
+}
 
+function handleMoveButtons(event) {
+    event.preventDefault();
+    var newText = event.target.innerHTML;
+    tracker2.push(newText);
+    event.target.remove();
+    for (var i = 0; i < tracker.length; i++){
+        if(tracker[i] == newText){
+            tracker.splice(i);
+        }
+    }
+    localStorage.setItem('watchlist', tracker);
+    var newListEl = document.createElement("p");
 
+    localStorage.setItem('watchedList', newText);
+    newListEl.innerHTML = event.target.innerHTML;
+    WatchedList.appendChild(newListEl);
+
+}
+
+function displayList(name) {
+    var listEl = document.createElement("button");
+    listEl.classList.add("buttons");
+    listEl.setAttribute('id', 'button' + buttonNum);
+    buttonNum++;
+    listEl.innerHTML = name;
+    listEl.style.listStyle = "none";
+    toWatchList.appendChild(listEl);
+    console.log(localStorage.getItem('watchList'));
+    console.log(localStorage.getItem('watchedList'));
+}
+
+function displayInfo(picURL, siteURL, title, duration, year) {
+    imageEl.src = picURL;
+    titleEl.innerHTML = title;
+    durationEl.innerHTML = duration;
+    yearEl.innerHTML = "released in" +  year;
+}
 
 submitButton.addEventListener('click', handleSubmit);
 toWatchList.addEventListener('click', handleMoveButtons);
+
 
 
