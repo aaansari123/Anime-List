@@ -1,5 +1,7 @@
-* {
-    font-family: 'Edu VIC WA NT Beginner',
+*{
+    font-family: 'Mouse Memoirs', sans-serif;
+    background-color: darkseagreen;
+
 }
 
 header {
@@ -64,7 +66,14 @@ h2 {
     left: 50%;
     margin-left: -3px;
     top: 0;
+<<<<<<< HEAD
 }
+=======
+  }
+  .watch-list{
+    font-size: large;
+  }
+>>>>>>> 6ea3b12597e16c6066ab1301b0cc4b5dfd0d1c83
 
 /* responsive design to modile view */
 @media screen and (max-width: 390px) {
