@@ -1,3 +1,6 @@
+*{
+    font-family: 'Edu VIC WA NT Beginner',  
+}
 header {
     display: flex;
     padding: 3%;
@@ -50,3 +53,14 @@ h2 {
     font-size: larger;
     margin: 0 0 10 10%;
 }
+
+.vl {
+    border-left: 1px solid black;
+    height: 400;
+    position: inherit;
+    left: 50%;
+    margin-left: -3px;
+    top: 0;
+  }
+
+
