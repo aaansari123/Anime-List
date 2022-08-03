@@ -63,4 +63,27 @@ h2 {
     top: 0;
   }
 
+/* responsive design to modile view */
+  @media screen and (max-width: 390px) {
 
+    /* header {
+        background-color: white;
+    } */
+
+    #results {
+        display: block;
+    }
+
+    #resultsInfo {
+        border-top: 1px solid black;
+        margin-top: 10%;
+        padding-top: 10%;
+        border-left: none;
+    }
+
+    #anime-img {
+        margin-left:10%;
+    }
+
+  }
+  

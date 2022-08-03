@@ -92,7 +92,8 @@ function getAnimeInfo(name) {
                     for (var i = 0; i < data.data.length; i++) {
                         var title = data.data[i].title.replace(':', "");
                         if (title.toLowerCase() == name.toLowerCase()) {
-                            // console.log(i);
+                            console.log(i);
+                            console.log(data);
                             indexUsed = i;
                         }
                     }
@@ -179,7 +180,7 @@ function displayInfo(picURL, siteURL, title, duration, year) {
     imageEl.src = picURL;
     titleEl.innerHTML = title;
     durationEl.innerHTML = duration;
-    yearEl.innerHTML = "released in" +  year;
+    yearEl.innerHTML = "released in " +  year;
 }
 function createFromStorage(){
 
