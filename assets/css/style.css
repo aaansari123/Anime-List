@@ -41,7 +41,9 @@ main {
 }
 
 #resultsInfo {
-    margin-left: 30%;
+    border-left: 1px solid black;
+    margin-left: 10%;
+    padding-left: 10%;
 }
 
 h2 {
