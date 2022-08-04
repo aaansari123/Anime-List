@@ -1,13 +1,13 @@
 :root {
     --main-color: darkseagreen;
     --secondary-color: #ffffff;
-    --third-color: rgb(61, 201, 220); 
-
+    --third-color: rgb(61, 201, 220);
 }
 
 * {
     font-family: 'Mouse Memoirs', sans-serif;
     background-color: var(--main-color);
+    color: #ededed;
 }
 
 header {
@@ -45,10 +45,6 @@ header {
     transform: translate(2px, 2px);
 }
 
-body{
-    color: #ededed;
-}
-
 #results {
     display: flex;
     border-bottom: 1px solid var(--secondary-color);
@@ -60,6 +56,14 @@ main {
     justify-content: space-around;
 }
 
+p {
+    padding: 2%;
+}
+
+#quote {
+    color: #422800;
+}
+
 #resultsInfo {
     border-left: 1px solid var(--secondary-color);
     margin-left: 10%;
@@ -69,6 +73,7 @@ main {
 h2 {
     font-size: larger;
     margin: 0 0 10 10%;
+    padding-bottom: 10%;
 }
 
 .vl {
@@ -102,16 +107,17 @@ h2 {
         margin-left: 10%;
     }
 
-    #watch-list{
+    #watch-list {
         border-bottom: 1px solid black;
         margin-bottom: 10%;
         border-left: none;
     }
-    #vl{
+
+    #vl {
         display: none;
     }
-    main{
+
+    main {
         display: block;
     }
 }
-  
