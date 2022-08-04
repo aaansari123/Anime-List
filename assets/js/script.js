@@ -59,12 +59,12 @@ function getAnimeQuotes(name) {
     try {
 
         fetch(apiURL).then(function (response) {
-            if (response.status == 404){
+            if (response.status == 404) {
                 console.log("error3");
                 return;
-            }else if (response.ok) {
+            } else if (response.ok) {
                 response.json().then(function (data) {
-                    
+
                     var randNum = Math.floor(Math.random() * data.length);
                     var character = data[randNum].character;
                     var quote = data[randNum].quote;
@@ -74,7 +74,7 @@ function getAnimeQuotes(name) {
                     displayQuote(character, quote);
                 });
             }
-    
+
         });
     } catch (error) {
         console.log('error2');
@@ -92,7 +92,7 @@ function getAnimeInfo(name) {
     fetch(apiURL).then(function (response) {
         if (response.ok) {
             response.json().then(function (data) {
-                
+
                 try {
                     for (var i = 0; i < data.data.length; i++) {
                         var title = data.data[i].title.replace(':', "");
@@ -108,7 +108,7 @@ function getAnimeInfo(name) {
                     var year = data.data[indexUsed].year;
                     var episodes = data.data[indexUsed].episodes;
                     var rating = data.data[indexUsed].score;
-                    displayInfo(pic,url,title,duration,year,episodes,rating);
+                    displayInfo(pic, url, title, duration, year, episodes, rating);
 
                 } catch (error) {
                     console.log('error');
@@ -135,38 +135,38 @@ function handleSubmit(event) {
     userInput.value = "";
     getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
-    
+
 }
 
 function handleMoveButtons(event) {
     console.log(event.target.type);
-    if (event.target.type != "submit"){
+    if (event.target.type != "submit") {
         return;
     }
     event.preventDefault();
     var newText = event.target.innerHTML;
-    
+
     event.target.remove();
     var arrayY = [];
-    if (localStorage.getItem('watchList') != null){
+    if (localStorage.getItem('watchList') != null) {
         var arrayX = localStorage.getItem('watchList').split(',');
     }
-    for (var i = 0; i < arrayX.length; i++){
-        if (JSON.parse(arrayX[i]) != newText){
+    for (var i = 0; i < arrayX.length; i++) {
+        if (JSON.parse(arrayX[i]) != newText) {
             arrayY.push(arrayX[i]);
         }
     }
     localStorage.setItem('watchList', arrayY);
     var newListEl = document.createElement("p");
-    if (localStorage.getItem('watchedList') != null){
+    if (localStorage.getItem('watchedList') != null) {
         var arrayZ = localStorage.getItem('watchList').split(',');
         arrayZ.push(newText);
         localStorage.setItem('watchedList', arrayZ);
-    } else{
+    } else {
         tracker2.push(newText);
         localStorage.setItem('watchedList', tracker2);
     }
-    
+
     newListEl.innerHTML = event.target.innerHTML;
     WatchedList.appendChild(newListEl);
 
@@ -182,24 +182,24 @@ function displayList(name) {
     toWatchList.appendChild(listEl);
 }
 
-function displayInfo(picURL, siteURL, title, duration, year,episodes,rating) {
+function displayInfo(picURL, siteURL, title, duration, year, episodes, rating) {
     imageEl.src = picURL;
     urlEl.href = siteURL;
     urlEl.innerHTML = "MyAnimeList";
     titleEl.innerHTML = title;
     durationEl.innerHTML = duration;
-    yearEl.innerHTML = "released in " +  year;
+    yearEl.innerHTML = "Released in: " + year;
     numEpisodesEl.innerHTML = "# of Episodes: " + episodes;
-    ratingsEl.innerHTML = "rating: " + rating;
+    ratingsEl.innerHTML = "Rating: " + rating;
 }
-function displayQuote(character, quote){
+function displayQuote(character, quote) {
     quoteEl.innerHTML = character + ": " + quote;
 }
-function createFromStorage(){
+function createFromStorage() {
 
-    if(localStorage.getItem('watchList') != null){
+    if (localStorage.getItem('watchList') != null) {
         var newArray = localStorage.getItem('watchList').split(',')
-        for (var i = 0; i < newArray.length; i++){
+        for (var i = 0; i < newArray.length; i++) {
             var listEl = document.createElement("button");
             listEl.classList.add("buttons");
             listEl.setAttribute('id', 'button' + buttonNum);
@@ -207,16 +207,16 @@ function createFromStorage(){
             listEl.innerHTML = JSON.parse(newArray[i]);
             listEl.style.listStyle = "none";
             toWatchList.appendChild(listEl);
-            }
+        }
     }
-    if (localStorage.getItem('watchedList') != null){
+    if (localStorage.getItem('watchedList') != null) {
         var newArray2 = localStorage.getItem('watchedList').split(',')
-        for (var i = 0; i < newArray2.length; i++){
+        for (var i = 0; i < newArray2.length; i++) {
             var newListEl = document.createElement("p");
             newListEl.innerHTML = newArray2[i].replace('"', "");
             newListEl.style.listStyle = "none";
             WatchedList.appendChild(newListEl);
-            }
+        }
     }
 
 
@@ -231,12 +231,12 @@ function ratestar() {
     a.innerHTML = "&#xf006;";
     setTimeout(function () {
         a.innerHTML = "&#xf123;";
-      }, 1000);
+    }, 1000);
     setTimeout(function () {
         a.innerHTML = "&#xf005;";
-      }, 2000);
-  }
-  ratestar();
-  setInterval(ratestar, 3000);
+    }, 2000);
+}
+ratestar();
+setInterval(ratestar, 3000);
 
 
