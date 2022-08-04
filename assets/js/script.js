@@ -113,7 +113,8 @@ function getAnimeInfo(name) {
                             indexUsed = i;
                         }
                     }
-                    console.log(data.data[indexUsed]);
+                    console.log(data.data);
+                    console.log(data.data[indexUsed].images.webp.image_url);
                     var pic = data.data[indexUsed].images.webp.image_url;
                     var title = data.data[indexUsed].title;
                     var url = data.data[indexUsed].url;
@@ -127,22 +128,31 @@ function getAnimeInfo(name) {
                         addStorage(tracker, tracker2);
                         displayList(name);
                     }
+                    getAnimeQuotes(name);
 
                 } catch (error) {
                     console.log('error');
+                    // titleEl.innerHTML = "we could not find that anime. try searching with a different name and check your spelling!"
+                    errorPage();
                     return;
-
                 }
-
-
-
             });
         }
 
     });
 
 }
-
+function errorPage(){
+    imageEl.src = ""
+    urlEl.href = ""
+    urlEl.innerHTML = ""
+    titleEl.innerHTML = ""
+    durationEl.innerHTML = "we could not find that anime. try searching with a different name and check your spelling!"
+    yearEl.innerHTML = ""
+    numEpisodesEl.innerHTML = ""
+    ratingsEl.innerHTML = ""
+    quoteEl.innerHTML = "";
+}
 // function calls
 function handleSubmit(event) {
     event.preventDefault();
@@ -151,8 +161,6 @@ function handleSubmit(event) {
     console.log(tracker);
     console.log(tracker2);
     userInput.value = "";
-
-    getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
     
 }
