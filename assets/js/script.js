@@ -30,6 +30,7 @@ var tracker = [];
 var tracker2 = [];
 // var tracker = localStorage.getItem('watchList');
 var buttonNum = 1;
+var x =1;
 // var tracker2 = localStorage.getItem('watchedList')
 
 /* functions needed
@@ -43,14 +44,14 @@ function to render quote and link
 
 
 // api call to get the quotes data
-function checkDuplicate(title){
+function checkDuplicate(title) {
     if (tracker.indexOf(title) >= 0 || tracker2.indexOf(title) >= 0) {
         return true;
-    } 
+    }
     return false;
 }
-function resetTrackers(){
-    if (localStorage.getItem('watchList')!= null && localStorage.getItem('watchedList') != null){
+function resetTrackers() {
+    if (localStorage.getItem('watchList') != null && localStorage.getItem('watchedList') != null) {
         tracker = localStorage.getItem('watchList').split(',');
         tracker2 = localStorage.getItem('watchedList').split(',');
         console.log(tracker);
@@ -70,10 +71,10 @@ function getAnimeQuotes(name) {
         }
     }
     try {
-
         fetch(apiURL).then(function (response) {
             if (response.status == 404) {
                 console.log("error3");
+                displayQuote(null,null);
                 return;
             } else if (response.ok) {
                 response.json().then(function (data) {
@@ -81,11 +82,8 @@ function getAnimeQuotes(name) {
                     var randNum = Math.floor(Math.random() * data.length);
                     var character = data[randNum].character;
                     var quote = data[randNum].quote;
-                    // console.log(data[randNum].character);
-                    // console.log(data[randNum].quote);
-                    if (!checkDuplicate(name)){
-                        displayList(name);
-                    }
+                    console.log(data[randNum].character);
+                    console.log(data[randNum].quote);
                     displayQuote(character, quote);
                 });
             }
@@ -93,6 +91,7 @@ function getAnimeQuotes(name) {
         });
     } catch (error) {
         console.log('error2');
+        
         return;
     }
 
@@ -122,8 +121,12 @@ function getAnimeInfo(name) {
                     var year = data.data[indexUsed].year;
                     var episodes = data.data[indexUsed].episodes;
                     var rating = data.data[indexUsed].score;
-                    displayInfo(pic,url,title,duration,year,episodes,rating);
-                    
+                    displayInfo(pic, url, title, duration, year, episodes, rating);
+                    if (!checkDuplicate(name)) {
+                        tracker.push(name);
+                        addStorage(tracker, tracker2);
+                        displayList(name);
+                    }
 
                 } catch (error) {
                     console.log('error');
@@ -148,21 +151,15 @@ function handleSubmit(event) {
     console.log(tracker);
     console.log(tracker2);
     userInput.value = "";
+
     getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
-    if (!checkDuplicate(animeName)){
-        tracker.push(animeName);
-        addStorage(tracker,tracker2);
-    }
-    
-    
-    
     
 }
 
 function handleMoveButtons(event) {
     // addStorage(tracker,tracker2);
-    if (event.target.type != "submit"){
+    if (event.target.type != "submit") {
         return;
     }
     event.preventDefault();
@@ -170,11 +167,11 @@ function handleMoveButtons(event) {
 
     event.target.remove();
     tracker = [];
-    if (localStorage.getItem('watchList') != null){
+    if (localStorage.getItem('watchList') != null) {
         var arrayX = localStorage.getItem('watchList').split(',');
     }
-    for (var i = 0; i < arrayX.length; i++){
-        if (arrayX[i] != newText){
+    for (var i = 0; i < arrayX.length; i++) {
+        if (arrayX[i] != newText) {
             tracker.push(arrayX[i]);
         }
     }
@@ -187,14 +184,15 @@ function handleMoveButtons(event) {
     // }
     tracker2.push(newText);
     var newListEl = document.createElement("p");
-    
+
     newListEl.innerHTML = event.target.innerHTML;
     WatchedList.appendChild(newListEl);
-    addStorage(tracker,tracker2);
+    addStorage(tracker, tracker2);
 
 }
 
 function displayList(name) {
+    console.log('test');
     var listEl = document.createElement("button");
     listEl.classList.add("buttons");
     listEl.setAttribute('id', 'button' + buttonNum);
@@ -202,7 +200,8 @@ function displayList(name) {
     listEl.innerHTML = name;
     listEl.style.listStyle = "none";
     toWatchList.appendChild(listEl);
-}
+    }
+    
 
 function displayInfo(picURL, siteURL, title, duration, year, episodes, rating) {
     imageEl.src = picURL;
@@ -216,8 +215,11 @@ function displayInfo(picURL, siteURL, title, duration, year, episodes, rating) {
 }
 function displayQuote(character, quote) {
     quoteEl.innerHTML = character + ": " + quote;
+    if (character == null || quote == null){
+        quoteEl.innerHTML = "";
+    }
 }
-function createFromStorage(){
+function createFromStorage() {
     console.log(localStorage.getItem('watchList'));
     console.log(localStorage.getItem('watchedList'));
 
@@ -231,8 +233,8 @@ function createFromStorage(){
             listEl.innerHTML = newArray[i];
             listEl.style.listStyle = "none";
             toWatchList.appendChild(listEl);
-            }
-    }else{
+        }
+    } else {
         return;
     }
     if (localStorage.getItem('watchedList') != null) {
@@ -242,15 +244,15 @@ function createFromStorage(){
             newListEl.innerHTML = newArray2[i].replace('"', "");
             newListEl.style.listStyle = "none";
             WatchedList.appendChild(newListEl);
-            }
-    }else{
+        }
+    } else {
         return;
     }
 
 
 }
-function addStorage(tracker,tracker2){
-    if (tracker != null && tracker2 != null){
+function addStorage(tracker, tracker2) {
+    if (tracker != null && tracker2 != null) {
         localStorage.setItem('watchList', tracker);
         localStorage.setItem('watchedList', tracker2);
     }
@@ -269,7 +271,7 @@ function ratestar() {
     }, 1000);
     setTimeout(function () {
         a.innerHTML = "&#xf005;";
-      }, 2000);
-  }
-  ratestar();
-  setInterval(ratestar, 3000);
+    }, 2000);
+}
+ratestar();
+setInterval(ratestar, 3000);
