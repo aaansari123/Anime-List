@@ -131,19 +131,26 @@ function getAnimeInfo(name) {
 
                 } catch (error) {
                     console.log('error');
+                    // titleEl.innerHTML = "we could not find that anime. try searching with a different name and check your spelling!"
+                    errorPage();
                     return;
-
                 }
-
-
-
             });
         }
 
     });
 
 }
-
+function errorPage(){
+    imageEl.src = ""
+    urlEl.href = ""
+    urlEl.innerHTML = ""
+    titleEl.innerHTML = ""
+    durationEl.innerHTML = ""
+    yearEl.innerHTML = ""
+    numEpisodesEl.innerHTML = ""
+    ratingsEl.innerHTML = ""
+}
 // function calls
 function handleSubmit(event) {
     event.preventDefault();
