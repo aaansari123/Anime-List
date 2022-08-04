@@ -129,9 +129,9 @@ button {
     }
 
     #watch-list {
-        border-bottom: 1px solid black;
-        margin-bottom: 10%;
-        border-left: none;
+        border-bottom: 1px solid rgb(255, 253, 253);
+        margin-left: 10%;
+        margin-right: 10%;
     }
 
     #vl {
@@ -140,5 +140,6 @@ button {
 
     main {
         display: block;
+        text-align: center;
     }
 }
