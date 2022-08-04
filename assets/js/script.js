@@ -128,6 +128,7 @@ function getAnimeInfo(name) {
                         addStorage(tracker, tracker2);
                         displayList(name);
                     }
+                    getAnimeQuotes(name);
 
                 } catch (error) {
                     console.log('error');
@@ -146,10 +147,11 @@ function errorPage(){
     urlEl.href = ""
     urlEl.innerHTML = ""
     titleEl.innerHTML = ""
-    durationEl.innerHTML = ""
+    durationEl.innerHTML = "we could not find that anime. try searching with a different name and check your spelling!"
     yearEl.innerHTML = ""
     numEpisodesEl.innerHTML = ""
     ratingsEl.innerHTML = ""
+    quoteEl.innerHTML = "";
 }
 // function calls
 function handleSubmit(event) {
@@ -159,8 +161,6 @@ function handleSubmit(event) {
     console.log(tracker);
     console.log(tracker2);
     userInput.value = "";
-
-    getAnimeQuotes(animeName);
     getAnimeInfo(animeName);
     
 }
