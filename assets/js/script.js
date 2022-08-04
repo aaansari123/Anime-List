@@ -113,7 +113,8 @@ function getAnimeInfo(name) {
                             indexUsed = i;
                         }
                     }
-                    console.log(data.data[indexUsed]);
+                    console.log(data.data);
+                    console.log(data.data[indexUsed].images.webp.image_url);
                     var pic = data.data[indexUsed].images.webp.image_url;
                     var title = data.data[indexUsed].title;
                     var url = data.data[indexUsed].url;
